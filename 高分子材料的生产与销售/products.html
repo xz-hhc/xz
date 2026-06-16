@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产品中心 - 高分子材料生产与销售</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#23b5a4"/><text x="14" y="20" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold" font-family="sans-serif">P</text></svg>
+      华创新材
+    </div>
+    <button class="hamburger">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="production.html">生产工艺</a></li>
+      <li><a href="products.html">产品中心</a></li>
+      <li><a href="#" onclick="event.preventDefault();openAiGenerator('')" style="background:linear-gradient(135deg,var(--accent),#e67e22);color:#fff;padding:8px 12px;border-radius:6px;font-weight:700">AI 生图</a></li>
+      <li><a href="checkout.html" class="cart-badge">结算 <span class="cart-count">0</span></a></li>
+      <li><a href="orders.html">我的订单</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header animate-on-scroll">
+  <div class="container">
+    <h1>产品中心</h1>
+    <p>高性能高分子材料 · 品类齐全 · 支持定制</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <p style="text-align:center;color:var(--text-muted);margin-bottom:28px">
+      选择您需要的产品，填写数量后加入购物车，即可前往结算。
+    </p>
+    <div id="product-list" class="card-grid"></div>
+  </div>
+</section>
+
+
+<!-- AI 图片生成弹窗 -->
+<div id="ai-gen-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>AI 产品图生成器</h2>
+      <button class="modal-close" onclick="closeAiGenerator()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px">
+        使用 AI 为产品生成高质量展示图片。输入提示词即可获得可复制到图像生成工具中使用的描述。
+      </p>
+      <div class="form-group">
+        <label for="ai-gen-product">产品名称</label>
+        <input type="text" id="ai-gen-product" class="form-control" placeholder="输入产品名称">
+      </div>
+      <div class="form-group">
+        <label for="ai-gen-prompt">AI 提示词</label>
+        <textarea id="ai-gen-prompt" class="form-control" rows="4" placeholder="描述您想要的图片效果..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="generateAiImage()" style="width:100%">生成提示词</button>
+      <div id="ai-gen-result" style="margin-top:12px"></div>
+    </div>
+    <div class="modal-footer">
+      <p style="font-size:0.78rem;color:var(--text-light)">生成的提示词可直接用于 DALL·E、Midjourney 等 AI 图像生成工具</p>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2026 <strong>华创新材科技有限公司</strong> &mdash; 专业高分子材料生产与销售</p>
+    <p style="margin-top:4px;opacity:0.6">地址：江苏省苏州市工业园区新材料产业园 &nbsp;|&nbsp; 电话：400-888-6688</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
