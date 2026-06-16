@@ -1,0 +1,39 @@
+﻿<view class="container">
+  <view class="page-title">📚 知识库管理</view>
+
+  <view class="card stats-card">
+    <view class="stat-item">
+      <text class="stat-number">{{stats.docCount}}</text>
+      <text class="stat-label">文档数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-number">{{stats.chunkCount}}</text>
+      <text class="stat-label">知识片段</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-number">{{stats.vectorDim}}</text>
+      <text class="stat-label">向量维度</text>
+    </view>
+  </view>
+
+  <block wx:if="{{documents.length > 0}}">
+    <view wx:for="{{documents}}" wx:key="id" class="card doc-item">
+      <view class="doc-info">
+        <text class="doc-name">📄 {{item.filename}}</text>
+        <text class="doc-meta">{{item.chunk_count}} 个知识片段</text>
+      </view>
+      <view class="doc-actions">
+        <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteDoc">删除</button>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="empty-state">
+    <text>暂无知识文档</text>
+    <text class="empty-hint">请先前往「上传」页面导入资料</text>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
