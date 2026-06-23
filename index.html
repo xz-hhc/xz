@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>爱心飘落</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0015 0%, #1a0020 40%, #0d0018 100%);
+    font-family: system-ui, -apple-system, "PingFang SC", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    cursor: pointer;
+  }
+  
+  /* Hint text */
+  .hint {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 182, 193, 0.7);
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+    animation: hintPulse 2.5s ease-in-out infinite;
+    transition: opacity 0.6s ease;
+    text-shadow: 0 0 20px rgba(255, 100, 150, 0.3);
+  }
+  .hint.hidden { opacity: 0; }
+  
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.35; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.04); }
+  }
+  
+  /* Hearts container */
+  #hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  /* Heart wrapper */
+  .heart {
+    position: absolute;
+    top: -80px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hint" id="hint">轻触屏幕 · 满屏爱心</div>
+<div id="hearts-container"></div>
+
+<script>
+(function() {
+  'use strict';
+  
+  const container = document.getElementById('hearts-container');
+  const hint = document.getElementById('hint');
+  let active = false;
+  let intervalId = null;
+  let heartIdCounter = 0;
+  
+  // ── Pre-generate keyframe variants for drift & rotation ──
+  const VARIANT_COUNT = 12;
+  const driftValues = [];
+  const rotationValues = [];
+  for (let i = 0; i < VARIANT_COUNT; i++) {
+    driftValues.push((Math.random() - 0.5) * 320);
+    rotationValues.push((Math.random() - 0.5) * 720);
+    const style = document.createElement('style');
+    style.textContent = `@keyframes heartFall-${i} {
+      0%   { transform: translateY(0)     translateX(0)     rotate(0deg);   opacity: 0; }
+      5%   { opacity: 0.88; }
+      65%  { opacity: 0.65; }
+      100% { transform: translateY(calc(100vh + 80px)) translateX(${driftValues[i]}px) rotate(${rotationValues[i]}deg); opacity: 0; }
+    }`;
+    document.head.appendChild(style);
+  }
+  
+  // ── SVG heart template ──
+  function heartSVG(id) {
+    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <defs>
+        <linearGradient id="hg-${id}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#ffb3c6" stop-opacity="0.95"/>
+          <stop offset="40%"  stop-color="#ff6b8a" stop-opacity="0.90"/>
+          <stop offset="100%" stop-color="#e81c4e" stop-opacity="0.85"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 30 C50 15 35 0 20 0 C5 0 0 13 0 25 C0 45 20 60 50 80 C80 60 100 45 100 25 C100 13 95 0 80 0 C65 0 50 15 50 30Z" fill="url(#hg-${id})"/>
+    </svg>`;
+  }
+  
+  // ── Create a single heart element ──
+  function createHeart() {
+    const id = heartIdCounter++;
+    const size = 22 + Math.random() * 38; // 22–60px
+    const x = Math.random() * 100;         // left as vw %
+    const duration = 4.5 + Math.random() * 3.5; // 4.5–8s
+    const delay = Math.random() * 1.5;          // 0–1.5s stagger
+    const variant = Math.floor(Math.random() * VARIANT_COUNT);
+    
+    const el = document.createElement('div');
+    el.className = 'heart';
+    el.style.cssText = `width:${size}px;height:${size}px;left:${x}vw;animation:heartFall-${variant} ${duration}s ease-in ${delay}s 1 forwards`;
+    el.innerHTML = heartSVG(id);
+    container.appendChild(el);
+    
+    // Auto-remove after animation ends (plus buffer)
+    const totalMs = (duration + delay + 0.5) * 1000;
+    setTimeout(() => { if (el.parentNode) el.remove(); }, totalMs);
+  }
+  
+  // ── Burst of hearts ──
+  function burstHearts(count) {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => createHeart(), i * 60);
+    }
+  }
+  
+  // ── Gentle chime sound (Web Audio API) ──
+  function playChime() {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Ascending gentle chime – two oscillators for richness
+      var osc1 = ctx.createOscillator();
+      var osc2 = ctx.createOscillator();
+      var gain = ctx.createGain();
+      
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(784, ctx.currentTime);      // G5
+      osc1.frequency.linearRampToValueAtTime(1318, ctx.currentTime + 0.15); // E6
+      
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(988, ctx.currentTime);      // B5
+      osc2.frequency.linearRampToValueAtTime(1568, ctx.currentTime + 0.15); // G6
+      
+      gain.gain.setValueAtTime(0.04, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
+      
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc1.start(ctx.currentTime);
+      osc2.start(ctx.currentTime);
+      osc1.stop(ctx.currentTime + 0.7);
+      osc2.stop(ctx.currentTime + 0.7);
+    } catch(e) { /* audio unavailable – silent */ }
+  }
+  
+  // ── Main trigger ──
+  function startHearts() {
+    if (active) return;
+    active = true;
+    hint.classList.add('hidden');
+    
+    playChime();
+    
+    // Initial big burst
+    burstHearts(35);
+    
+    // Continuous stream
+    intervalId = setInterval(() => { createHeart(); }, 150);
+    
+    // Gradually slow down
+    setTimeout(() => {
+      clearInterval(intervalId);
+      intervalId = setInterval(() => { createHeart(); }, 300);
+    }, 5000);
+    
+    // Stop automatic generation after a while
+    setTimeout(() => {
+      if (intervalId) { clearInterval(intervalId); intervalId = null; }
+      active = false;
+    }, 18000);
+  }
+  
+  // ── Event binding (avoid double-fire on touch + click) ──
+  var eventFired = false;
+  function handleInteraction(e) {
+    if (eventFired) return;
+    eventFired = true;
+    if (e && e.preventDefault) e.preventDefault();
+    startHearts();
+    // Reset flag after a short delay so re-tap works later
+    setTimeout(function() { eventFired = false; }, 300);
+  }
+  
+  document.addEventListener('touchstart', handleInteraction, { passive: false });
+  document.addEventListener('click', handleInteraction);
+  
+})();
+</script>
+</body>
+</html>
