@@ -1,0 +1,42 @@
+﻿{
+  "pages": [
+    "pages/chat/chat",
+    "pages/upload/upload",
+    "pages/knowledge/knowledge"
+  ],
+  "window": {
+    "navigationBarTitleText": "AI 知识助手",
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#4F46E5",
+    "backgroundColor": "#F5F5F5"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#4F46E5",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "对话",
+        "iconPath": "images/chat.png",
+        "selectedIconPath": "images/chat-active.png"
+      },
+      {
+        "pagePath": "pages/upload/upload",
+        "text": "上传",
+        "iconPath": "images/upload.png",
+        "selectedIconPath": "images/upload-active.png"
+      },
+      {
+        "pagePath": "pages/knowledge/knowledge",
+        "text": "知识库",
+        "iconPath": "images/knowledge.png",
+        "selectedIconPath": "images/knowledge-active.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 30000
+  }
+}

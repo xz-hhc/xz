@@ -1,0 +1,28 @@
+﻿<view class="container">
+  <view class="page-title">📤 上传知识文档</view>
+
+  <view class="card">
+    <view class="upload-zone" bindtap="chooseFile">
+      <text class="upload-icon">📁</text>
+      <text class="upload-text">点击选择文件</text>
+      <text class="upload-hint">支持 TXT · PDF · DOCX · CSV · MD · JSON</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{uploadStatus}}">
+    <view class="status-item">
+      <text class="status-text">{{uploadStatus}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="section-title">上传记录</text>
+    <block wx:if="{{uploadHistory.length > 0}}">
+      <view wx:for="{{uploadHistory}}" wx:key="id" class="history-item">
+        <text class="file-name">📄 {{item.filename}}</text>
+        <text class="file-status success">✓ 已处理</text>
+      </view>
+    </block>
+    <view wx:else class="empty-state">暂无上传记录</view>
+  </view>
+</view>

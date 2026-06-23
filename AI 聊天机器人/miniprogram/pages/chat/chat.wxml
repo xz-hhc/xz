@@ -1,0 +1,27 @@
+﻿<view class="container">
+  <view class="messages" id="messages">
+    <block wx:for="{{messages}}" wx:key="index">
+      <view class="message {{item.role === 'user' ? 'user' : 'bot'}}">
+        <text>{{item.content}}</text>
+        <view wx:if="{{item.sources && item.sources.length > 0}}" class="sources">
+          <text class="sources-title">📖 参考来源：</text>
+          <view wx:for="{{item.sources}}" wx:for-item="src" wx:key="filename" class="source-item">
+            📄 {{src.filename}}
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx:if="{{isTyping}}" class="message bot typing">
+      <text>AI 正在思考...</text>
+    </view>
+  </view>
+
+  <view class="input-area">
+    <view class="input-wrapper">
+      <input class="msg-input" placeholder="输入你的问题..." 
+             value="{{inputValue}}" bindinput="onInput" 
+             bindconfirm="sendMessage" confirm-type="send"/>
+      <button class="send-btn" bindtap="sendMessage" disabled="{{!inputValue.trim()}}">发送</button>
+    </view>
+  </view>
+</view>

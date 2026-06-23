@@ -1,0 +1,3 @@
+display_name: Code Review
+short_description: Comprehensive code review and analysis for any project
+default_prompt: Review this project and produce a findings-led report organized by severity.

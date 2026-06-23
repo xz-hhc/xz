@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>结算 - 高分子材料生产与销售</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#23b5a4"/><text x="14" y="20" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold" font-family="sans-serif">P</text></svg>
+      华创新材
+    </div>
+    <button class="hamburger">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="production.html">生产工艺</a></li>
+      <li><a href="products.html">产品中心</a></li>
+      <li><a href="checkout.html" class="cart-badge">结算 <span class="cart-count">0</span></a></li>
+      <li><a href="orders.html">我的订单</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header animate-on-scroll">
+  <div class="container">
+    <h1>订单结算</h1>
+    <p>确认商品信息，填写配送与付款信息</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start">
+
+      <!-- 购物车商品 -->
+      <div>
+        <h2 class="section-title" style="font-size:1.2rem">购物车</h2>
+        <div id="cart-items" class="cart-items"></div>
+        <div id="cart-total"></div>
+        <div style="margin-top:16px">
+          <a href="products.html" class="btn btn-outline btn-sm">&larr; 继续选购</a>
+        </div>
+      </div>
+
+      <!-- 结算表单 -->
+      <div>
+        <h2 class="section-title" style="font-size:1.2rem">收货与付款信息</h2>
+        <form id="order-form">
+          <div class="form-group">
+            <label for="contact">联系人 *</label>
+            <input type="text" id="contact" name="contact" class="form-control" placeholder="请输入联系人姓名" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">联系电话 *</label>
+            <input type="tel" id="phone" name="phone" class="form-control" placeholder="请输入11位手机号码" required>
+          </div>
+          <div class="form-group">
+            <label for="address">送货地址 *</label>
+            <textarea id="address" name="address" class="form-control" rows="3" placeholder="省/市/区/街道/门牌号" required style="resize:vertical"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="payment">付款方式 *</label>
+            <select id="payment" name="payment" class="form-control" required>
+              <option value="">请选择付款方式</option>
+              <option value="微信支付">微信支付</option>
+              <option value="支付宝">支付宝</option>
+              <option value="银行转账">银行转账</option>
+              <option value="对公汇款">对公汇款</option>
+              <option value="货到付款">货到付款</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:1.05rem">确认提交订单</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2026 <strong>华创新材科技有限公司</strong> &mdash; 专业高分子材料生产与销售</p>
+    <p style="margin-top:4px;opacity:0.6">地址：江苏省苏州市工业园区新材料产业园 &nbsp;|&nbsp; 电话：400-888-6688</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
